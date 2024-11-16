@@ -10,6 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { useRouter, usePathname } from "next/navigation";
+import { SignIn } from "./sign-in";
 
 const navItems = [
   { path: "/", label: "Home", icon: Home },
@@ -19,15 +20,17 @@ const navItems = [
 ];
 
 export function Navbar() {
-	const {data: session} = useSession();
+  const { data: session } = useSession();
+  console.log("session", session);
 	const router = useRouter();
 	const pathname = usePathname();
 
 	return (
 		<nav className="flex items-center justify-between p-4 bg-white">
-			<div className="text-lg font-semibold text-black">
-				{session?.user?.name?.slice(0, 10)}
-			</div>
+			{/* <div className="text-lg font-semibold text-black">
+				{session?.user?.name?.slice(0, 12)}
+      </div> */}
+      <SignIn />
 			<Select value={pathname} onValueChange={(value) => router.push(value)}>
 				<SelectTrigger className="w-[180px]">
 					<SelectValue placeholder="Navigate to..." />

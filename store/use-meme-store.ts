@@ -42,6 +42,10 @@ const abi1 = [
   },
 ];
 
+const abi2 = [
+  "function balanceOf(address _owner) view returns (uint256)"
+];
+
 interface MemeToken {
 	name: string;
 	symbol: string;
@@ -120,7 +124,7 @@ export const useMemeStore = create<MemeState>()(
 						symbol: coin[1] || "",
 						description: coin[2] || "",
 						image: coin[3] && coin[3].startsWith("http") ? coin[3] : "/placeholder.png",
-						supply: coin[4] ? ethers.utils.formatUnits(coin[4], 0) : "0",
+						supply: "1",
 						creator: coin[5] || "",
 						contractAddress: coin[6] || ""
 					}));
@@ -172,6 +176,21 @@ export const useMemeStore = create<MemeState>()(
 					await get().fetchMemeCoins();
 				} catch (error) {
 					console.error("Error creating meme token:", error);
+					throw error;
+				}
+            },
+			getBalance: async (address: string): Promise<string> => {
+				try {
+					const provider = new ethers.providers.JsonRpcProvider(process.env.NEXT_PUBLIC_ALCHEMY_RPC_URL);
+					const contract = new ethers.Contract(
+						"0x1d9B6ee651Eb174D12Cf9c7Cb5cAcCD428B393Cb",
+						abi2,
+						provider
+					);
+					const balance = await contract.balanceOf(address);
+					return balance.toString();
+				} catch (error) {
+					console.error("Error getting balance:", error);
 					throw error;
 				}
 			},
