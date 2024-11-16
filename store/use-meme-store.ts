@@ -5,6 +5,43 @@ import {abi} from "../public/abi";
 import Cookies from "js-cookie";
 import {MiniKit} from "@worldcoin/minikit-js";
 
+const abi1 = [
+  {
+    inputs: [
+      {
+        internalType: "string",
+        name: "name",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "symbol",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "imageUrl",
+        type: "string",
+      },
+      {
+        internalType: "string",
+        name: "description",
+        type: "string",
+      },
+    ],
+    name: "createMemeToken",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+];
+
 interface MemeToken {
 	name: string;
 	symbol: string;
@@ -118,12 +155,15 @@ export const useMemeStore = create<MemeState>()(
 								transaction: [
 									{
 										address: "0xF7a41702267781b4ad671Cca32fbB3aAb1Bb129d",
-										abi: abi,
+										abi: abi1,
 										functionName: "createMemeToken",
-										args: [name, symbol, image, description],
+										args: ["name1", "symbol1", "imag1e", "description"],
 									},
 								],
-							});
+                        });
+                    
+                    console.log("commandPayload: ", commandPayload);
+                    console.log("finalPayload: ", finalPayload);
 
 					if (finalPayload.status === "error") {
 						throw new Error(finalPayload.error_code || "Transaction failed");

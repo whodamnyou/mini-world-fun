@@ -20,9 +20,11 @@ export function CreateMemeForm({onSuccess, className}: CreateMemeFormProps) {
 		image: "",
 		description: "",
 	});
-	const fileInputRef = useRef<HTMLInputElement>(null);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    
 
-	const handleCreateMemeToken = async () => {
+    const handleCreateMemeToken = async () => {
+        console.log("meme data:",newMeme );
 		try {
 			setIsCreating(true);
 			await createMemeToken(
