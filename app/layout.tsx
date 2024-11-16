@@ -28,15 +28,21 @@ export default function RootLayout({
 	);
 	return (
 		<html lang="en">
-			<body
-				className={`${inter.className} h-screen w-screen overflow-hidden`}
-			>
+			<body className={`${inter.className} h-screen w-screen`}>
 				<NextAuthProvider>
 					<ErudaProvider>
 						<MiniKitProvider>
-							<Navbar />	
-							{children}
-							{/* <Footer /> */}
+							<div className="h-screen flex flex-col">
+								<div className="fixed top-0 left-0 right-0 z-50">
+									<Navbar />
+								</div>
+								<main className="flex-1 overflow-y-auto mt-[64px] mb-[64px]">
+									{children}
+								</main>
+								{/* <div className="fixed bottom-0 left-0 right-0">
+									<Footer />
+								</div> */}
+							</div>
 						</MiniKitProvider>
 					</ErudaProvider>
 				</NextAuthProvider>

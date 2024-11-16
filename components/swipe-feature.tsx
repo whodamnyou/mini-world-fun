@@ -6,61 +6,11 @@ import {useSwipeable} from "react-swipeable";
 import {XCircle, CheckCircle, CircleMinus, CirclePlus} from "lucide-react";
 import {Card} from "@/components/ui/card";
 import {Input} from "./ui/input";
-import {Button} from "./ui/button";
+import { Button } from "./ui/button";
+import { itemsArray } from "@/data";
 
 export default function SwipeFeature() {
-	const [items, setItems] = useState([
-		{
-			name: "Dogelon",
-			src: "/bcc.jpg",
-			description: "Description for image 1",
-		},
-		{
-			name: "ShibaMoon",
-			src: "/bcc.jpg",
-			description: "Description for image 2",
-		},
-		{
-			name: "SafeMars",
-			src: "/bcc.jpg",
-			description: "Description for image 3",
-		},
-		{
-			name: "MoonPug",
-			src: "/bcc.jpg",
-			description: "Description for image 4",
-		},
-		{
-			name: "AstroDoge",
-			src: "/bcc.jpg",
-			description: "Description for image 5",
-		},
-		{
-			name: "CosmoCat",
-			src: "/bcc.jpg",
-			description: "Description for image 6",
-		},
-		{
-			name: "GalaxyPup",
-			src: "/bcc.jpg",
-			description: "Description for image 7",
-		},
-		{
-			name: "RocketRat",
-			src: "/bcc.jpg",
-			description: "Description for image 8",
-		},
-		{
-			name: "StellarFox",
-			src: "/bcc.jpg",
-			description: "Description for image 9",
-		},
-		{
-			name: "LunarWhale",
-			src: "/bcc.jpg",
-			description: "Description for image 10",
-		},
-	]);
+	const [items, setItems] = useState(itemsArray);
 	const [index, setIndex] = useState(0);
 	const [swipeDirection, setSwipeDirection] = useState("");
 	const [translateX, setTranslateX] = useState(0);
