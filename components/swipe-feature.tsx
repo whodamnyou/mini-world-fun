@@ -24,6 +24,33 @@ export default function SwipeFeature() {
 		fetchMemeCoins();
 	}, [fetchMemeCoins]);
 
+	const initiatePayment = async () => {
+		try {
+			const initiateResponse = await fetch('/api/initiate-payment', {
+				method: 'POST',
+			});
+			const { id } = await initiateResponse.json();
+			console.log('Payment ID received:', id);
+
+			const confirmResponse = await fetch('/api/confirm-payment', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					payload: {
+						reference: id,
+						transaction_id: 'test-transaction'
+					}
+				})
+			});
+			const confirmData = await confirmResponse.json();
+			console.log('Payment confirmation response:', confirmData);
+		} catch (error) {
+			console.error('Error in payment flow:', error);
+		}
+	};
+
 	const handlers = useSwipeable({
 		onSwipedLeft: () => {
 			removeCurrentMeme('left');
@@ -31,13 +58,16 @@ export default function SwipeFeature() {
 			setTranslateX(-100);
 			setRotateDeg(-45);
 			setOpacity(0.5);
+			console.log('Swiped left - rejected');
 		},
-		onSwipedRight: () => {
+		onSwipedRight: async () => {
 			removeCurrentMeme('right');
 			setSwipeDirection("right");
 			setTranslateX(100);
 			setRotateDeg(45);
 			setOpacity(0.5);
+			console.log('Swiped right - starting payment flow');
+			await initiatePayment();
 		},
 		onSwiped: () => {
 			setTimeout(() => {
@@ -94,7 +124,7 @@ export default function SwipeFeature() {
 									width={500}
 									height={500}
 								/>
-								<div className="flex flex-row w-full items-center space-x-2">
+								{/* <div className="flex flex-row w-full items-center space-x-2">
 									<Button
 										className="w-1/4"
 										onClick={handleDecrement}
@@ -113,7 +143,7 @@ export default function SwipeFeature() {
 									>
 										<CirclePlus />
 									</Button>
-								</div>
+								</div> */}
 							</>
 						) : (
 							<div className="flex items-center justify-center h-full">
