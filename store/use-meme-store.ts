@@ -102,31 +102,33 @@ export const useMemeStore = create<MemeState>()(
 					throw new Error("MiniKit not installed");
 				}
 
-				const deadline = Math.floor(
-					(Date.now() + 30 * 60 * 1000) / 1000
-				).toString();
+				// Validate inputs
+				if (!name || !symbol || !image || !description) {
+					throw new Error("All fields are required");
+				}
+
+				// Ensure image is a valid data URL or HTTP URL
+				if (!image.startsWith('data:image/') && !image.startsWith('http')) {
+					throw new Error("Invalid image format");
+				}
 
 				try {
 					const {commandPayload, finalPayload} =
 						await MiniKit.commandsAsync.sendTransaction({
-							transaction: [
-								{
-									address:
-										"0xF7a41702267781b4ad671Cca32fbB3aAb1Bb129d",
-									abi: abi,
-									functionName: "createMemeToken",
-									args: [name, symbol, image, description],
-								},
-							],
-						});
+								transaction: [
+									{
+										address: "0xF7a41702267781b4ad671Cca32fbB3aAb1Bb129d",
+										abi: abi,
+										functionName: "createMemeToken",
+										args: [name, symbol, image, description],
+									},
+								],
+							});
 
 					if (finalPayload.status === "error") {
-						throw new Error(
-							finalPayload.error_code || "Transaction failed"
-						);
+						throw new Error(finalPayload.error_code || "Transaction failed");
 					}
 
-					// Refresh the meme coins list after successful creation
 					await get().fetchMemeCoins();
 				} catch (error) {
 					console.error("Error creating meme token:", error);

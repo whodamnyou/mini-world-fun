@@ -44,9 +44,14 @@ export function CreateMemeForm({onSuccess, className}: CreateMemeFormProps) {
 		fileInputRef.current?.click();
 	};
 
-	const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
 		const file = e.target.files?.[0];
 		if (file) {
+			if (file.size > 5 * 1024 * 1024) { // 5MB limit
+				alert("File is too large. Please choose an image under 5MB");
+				return;
+			}
+
 			const reader = new FileReader();
 			reader.onloadend = () => {
 				setNewMeme({...newMeme, image: reader.result as string});
@@ -58,7 +63,7 @@ export function CreateMemeForm({onSuccess, className}: CreateMemeFormProps) {
 	return (
 		<div className={`p-4 space-y-4 ${className}`}>
 			<div
-				className="relative w-full aspect-square mb-4 cursor-pointer"
+				className="relative w-full aspect-square mb-4 cursor-pointer hover:opacity-90 transition-opacity"
 				onClick={handleImageClick}
 			>
 				{newMeme.image ? (
@@ -67,14 +72,21 @@ export function CreateMemeForm({onSuccess, className}: CreateMemeFormProps) {
 						alt="Meme Preview"
 						className="rounded-lg object-cover"
 						fill
+						priority
 					/>
 				) : (
-					<div className="w-full h-full flex items-center justify-center border-2 border-dashed border-gray-300 rounded-lg">
+					<div className="w-full h-full flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg hover:border-gray-400 transition-colors">
+						<svg className="w-8 h-8 text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+							<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+						</svg>
 						<p className="text-gray-500">Click to upload image</p>
+						<p className="text-gray-400 text-sm mt-1">Max size: 5MB</p>
 					</div>
 				)}
-				<Input
-					placeholder="Image URL"
+				<input
+					ref={fileInputRef}
+					type="file"
+					accept="image/*"
 					className="hidden"
 					onChange={handleImageChange}
 				/>
