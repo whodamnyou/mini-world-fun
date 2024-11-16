@@ -15,7 +15,7 @@ import {
 	ChartTooltip,
 	ChartTooltipContent,
 } from "@/components/ui/chart";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CommunityChat from "@/components/community-chat";
 
 const chartData = [
@@ -26,6 +26,7 @@ const chartData = [
 	{month: "May", desktop: 209},
 	{month: "June", desktop: 214},
 ];
+import { useMemeStore } from '@/store/use-meme-store'
 
 const chartConfig = {
 	desktop: {
@@ -35,7 +36,12 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export default function HoldingsPage() {
-	const [selectedCommunity, setSelectedCommunity] = useState<string | null>(null);
+  const { memeCoins, currentIndex, removeCurrentMeme, fetchMemeCoins, createMemeToken } = useMemeStore()
+  const [selectedCommunity, setSelectedCommunity] = useState<string | null>(null);
+  
+  useEffect(() => {
+		fetchMemeCoins();
+	}, [fetchMemeCoins]);
 
 	if (selectedCommunity) {
 		return (
@@ -51,13 +57,14 @@ export default function HoldingsPage() {
 	return (
 		<div className="px-6">
 			<Accordion className="w-full" type="single" collapsible>
-				{itemsArray.map((token, i) => (
-					<AccordionItem key={i} value={`item-${i}`}>
+				{memeCoins.length > 0 ? (
+					memeCoins.map((token, i) => (
+						<AccordionItem key={i} value={`item-${i}`}>
 						<AccordionTrigger>
 							<div className="flex items-center justify-between w-full">
 								<div className="flex items-center gap-4">
 									<img
-										src={token.src}
+										src={token.image}
 										alt={token.name}
 										className="w-8 h-8 rounded-full"
 									/>
@@ -66,7 +73,7 @@ export default function HoldingsPage() {
 									</span>
 								</div>
 								<span className="text-lg mr-4">
-									{token.amount || "0"}
+									{token.supply || "0"}
 								</span>
 							</div>
 						</AccordionTrigger>
@@ -111,9 +118,14 @@ export default function HoldingsPage() {
 							>
 								Chat with {token.name} community
 							</Button>
-						</AccordionContent>
-					</AccordionItem>
-				))}
+							</AccordionContent>
+						</AccordionItem>
+					))
+				) : (
+					<div className="col-span-2 text-center py-8">
+						<h2 className="text-xl font-semibold">No communities available</h2>
+					</div>
+				)}
 			</Accordion>
 		</div>
 	);

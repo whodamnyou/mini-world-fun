@@ -104,7 +104,7 @@ export const useMemeStore = create<MemeState>()(
 			},
 			fetchMemeCoins: async () => {
 				const contractAddress =
-					"0xF7a41702267781b4ad671Cca32fbB3aAb1Bb129d";
+					"0x658C7dcF7ba7f68020dB9ca240e1895665Ad238E";
 				const provider = new ethers.providers.JsonRpcProvider(
 					"https://worldchain-mainnet.g.alchemy.com/public"
 				);
@@ -154,7 +154,7 @@ export const useMemeStore = create<MemeState>()(
 						await MiniKit.commandsAsync.sendTransaction({
 								transaction: [
 									{
-										address: "0xF7a41702267781b4ad671Cca32fbB3aAb1Bb129d",
+										address: "0x658C7dcF7ba7f68020dB9ca240e1895665Ad238E",
 										abi: abi1,
 										functionName: "createMemeToken",
 										args: ["name1", "symbol1", "imag1e", "description"],

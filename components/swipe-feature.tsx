@@ -67,8 +67,6 @@ export default function SwipeFeature() {
 		}
 	};
 
-	console.log(memeCoins)
-
 	return (
 		<>
 			<div className="relative w-full h-full pt-8">
