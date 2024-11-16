@@ -18,7 +18,7 @@ export function Footer() {
   return (
     <Drawer>
       <DrawerTrigger asChild>
-        <Button className="fixed mb-4 px-6 bottom-0 left-1/2 transform -translate-x-1/2 w-2/3">Create your own MEME coin</Button>
+        <Button className="fixed mt-4 px-6 top-0 left-1/2 transform -translate-x-1/2 w-2/3">Create your own MEME coin</Button>
       </DrawerTrigger>
       <DrawerContent>
         <div className="mx-auto w-full">

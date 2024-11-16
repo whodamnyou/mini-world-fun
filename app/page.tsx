@@ -5,7 +5,7 @@ import SwipeFeature from "@/components/swipe-feature";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-24 gap-y-3">
+    <main className="flex flex-col items-center justify-center mt-4 p-4">
       {/* <SignIn /> */}
       {/* <VerifyBlock />
       <PayBlock /> */}
